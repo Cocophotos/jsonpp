@@ -23,6 +23,7 @@
 #define JSONPP_VALUE_HPP
 
 #include "type_traits.hpp"
+#include "utility.hpp"
 #include <string>
 #include <sstream>
 #include <map>
@@ -204,7 +205,12 @@ public:
         case type::boolean:
             return storage.boolean ? "true" : "false";
         case type::string:
-            return '"' + *(storage.str) + '"';
+        {
+            std::string str = *(storage.str);
+            replace_all<std::string>(str, "\\\"", "\"");
+            replace_all<std::string>(str, "\"", "\\\"");
+            return '"' + str + '"';
+        }
         case type::array: {
             std::ostringstream ss;
             ss.precision(precision);
