@@ -108,7 +108,9 @@ inline void parse_string(parser_state& ps, Value& v) {
     }
 
     while(*end) {
-        if(*end == '\\' && *(end + 1) != '\0' && *(end + 1) == '"') {
+        if(*end == '\\' && *(end +1) == '\\' && *(end + 2) != '\0' && *(end + 2) == '"'){
+            end = end + 3;
+        }else if(*end == '\\' && *(end + 1) != '\0' && *(end + 1) == '"') {
             end = end + 2;
         }
         else if(*end == '"') {
